@@ -1,0 +1,65 @@
+import heapq
+        neighbors = []
+        x, y = self.empty_pos
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+        for dx, dy in directions:
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < 3 and 0 <= ny < 3:
+                # Swap the empty tile with the adjacent tile
+                new_board = [row[:] for row in self.board]
+                new_board[x][y], new_board[nx][ny] = new_board[nx][ny], new_board[x][y]
+                neighbors.append(PuzzleState(new_board, (nx, ny), self.moves + 1, self))
+
+        return neighbors
+
+def a_star(start_state):
+    # A* search algorithm
+    open_list = []
+    heapq.heappush(open_list, start_state)
+    closed_set = set()
+
+    while open_list:
+        current_state = heapq.heappop(open_list)
+
+        if current_state.is_goal():
+            return current_state
+
+        closed_set.add(tuple(map(tuple, current_state.board)))
+
+        for neighbor in current_state.get_neighbors():
+            if tuple(map(tuple, neighbor.board)) not in closed_set:
+                heapq.heappush(open_list, neighbor)
+
+    return None
+
+def print_solution(state):
+    # Print the solution path from initial state to goal state
+    path = []
+    while state:
+        path.append(state.board)
+        state = state.previous
+    path.reverse()
+
+    for board in path:
+        for row in board:
+            print(row)
+        print("")
+
+if __name__ == "__main__":
+    # Initial board configuration
+    initial_board = [
+        [1, 2, 3],
+        [4, 0, 5],
+        [7, 8, 6]
+    ]
+
+    empty_pos = (1, 1)  # Position of the empty tile (0)
+    start_state = PuzzleState(initial_board, empty_pos)
+    goal_state = a_star(start_state)
+
+    if goal_state:
+        print("Solution found!")
+        print_solution(goal_state)
+    else:
+        print("No solution exists.")
