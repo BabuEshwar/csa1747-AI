@@ -1,0 +1,61 @@
+from collections import deque
+
+def bfs(jug1_capacity, jug2_capacity, target):
+    # To keep track of visited states
+    visited = set()
+    
+    # Using a queue to perform BFS
+    queue = deque()
+    
+    # Initial state (0, 0) and path
+    queue.append((0, 0, []))
+    
+    while queue:
+        jug1, jug2, path = queue.popleft()
+        
+        # If this state is already visited, skip it
+        if (jug1, jug2) in visited:
+            continue
+        
+        # Mark this state as visited
+        visited.add((jug1, jug2))
+        
+        # Add the current state to the path
+        path.append((jug1, jug2))
+        
+        # If the target amount is reached in either jug
+        if jug1 == target or jug2 == target:
+            # Print the solution path
+            print("Solution found:")
+            for step in path:
+                print(step)
+            return
+        
+        # Possible actions:
+        # 1. Fill Jug1
+        queue.append((jug1_capacity, jug2, path.copy()))
+        
+        # 2. Fill Jug2
+        queue.append((jug1, jug2_capacity, path.copy()))
+        
+        # 3. Empty Jug1
+        queue.append((0, jug2, path.copy()))
+        
+        # 4. Empty Jug2
+        queue.append((jug1, 0, path.copy()))
+        
+        # 5. Pour Jug1 into Jug2 until Jug2 is full or Jug1 is empty
+        pour_to_jug2 = min(jug1, jug2_capacity - jug2)
+        queue.append((jug1 - pour_to_jug2, jug2 + pour_to_jug2, path.copy()))
+        
+        # 6. Pour Jug2 into Jug1 until Jug1 is full or Jug2 is empty
+        pour_to_jug1 = min(jug2, jug1_capacity - jug1)
+        queue.append((jug1 + pour_to_jug1, jug2 - pour_to_jug1, path.copy()))
+
+    print("No solution found")
+
+# Example usage:
+jug1_capacity = 4
+jug2_capacity = 3
+target = 2
+bfs(jug1_capacity, jug2_capacity, target)
