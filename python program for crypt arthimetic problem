@@ -1,0 +1,36 @@
+import itertools
+
+def solve_cryptarithmetic(equation):
+    # Extract unique letters from the equation
+    letters = set(filter(str.isalpha, equation))
+    if len(letters) > 10:
+        print("Too many unique letters; cannot be solved with digits 0-9.")
+        return
+
+    # Create all possible digit permutations for the letters
+    for perm in itertools.permutations('0123456789', len(letters)):
+        # Create a mapping from letters to digits
+        letter_to_digit = dict(zip(letters, perm))
+
+        # Replace letters in the equation with corresponding digits
+        translated_equation = equation.translate(str.maketrans(letter_to_digit))
+
+        # Check if any number starts with '0' (invalid scenario)
+        if any(word[0] == '0' for word in translated_equation.split() if word.isdigit()):
+            continue
+
+        # Evaluate the equation
+        try:
+            if eval(translated_equation):
+                print(f"Solution found: {letter_to_digit}")
+                print(translated_equation)
+                return
+        except:
+            continue
+
+    print("No solution found.")
+
+# Example usage:
+# The equation should be in the form "SEND + MORE == MONEY"
+equation = "SEND + MORE == MONEY"
+solve_cryptarithmetic(equation)
