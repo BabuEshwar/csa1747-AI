@@ -1,0 +1,99 @@
+import math
+
+def print_board(board):
+    print(f"{board[0]} | {board[1]} | {board[2]}")
+    print("--+---+--")
+    print(f"{board[3]} | {board[4]} | {board[5]}")
+    print("--+---+--")
+    print(f"{board[6]} | {board[7]} | {board[8]}")
+
+def check_winner(board, player):
+    win_conditions = [(0, 1, 2), (3, 4, 5), (6, 7, 8),  # Rows
+                      (0, 3, 6), (1, 4, 7), (2, 5, 8),  # Columns
+                      (0, 4, 8), (2, 4, 6)]             # Diagonals
+    return any(board[a] == board[b] == board[c] == player for a, b, c in win_conditions)
+
+def is_full(board):
+    return ' ' not in board
+
+def minimax(board, depth, alpha, beta, is_maximizing):
+    if check_winner(board, 'O'):
+        return 1
+    if check_winner(board, 'X'):
+        return -1
+    if is_full(board):
+        return 0
+
+    if is_maximizing:
+        max_eval = -math.inf
+        for i in range(9):
+            if board[i] == ' ':
+                board[i] = 'O'
+                eval = minimax(board, depth + 1, alpha, beta, False)
+                board[i] = ' '
+                max_eval = max(max_eval, eval)
+                alpha = max(alpha, eval)
+                if beta <= alpha:
+                    break  # Beta cut-off
+        return max_eval
+    else:
+        min_eval = math.inf
+        for i in range(9):
+            if board[i] == ' ':
+                board[i] = 'X'
+                eval = minimax(board, depth + 1, alpha, beta, True)
+                board[i] = ' '
+                min_eval = min(min_eval, eval)
+                beta = min(beta, eval)
+                if beta <= alpha:
+                    break  # Alpha cut-off
+        return min_eval
+
+def best_move(board):
+    best_score = -math.inf
+    move = 0
+    for i in range(9):
+        if board[i] == ' ':
+            board[i] = 'O'
+            score = minimax(board, 0, -math.inf, math.inf, False)
+            board[i] = ' '
+            if score > best_score:
+                best_score = score
+                move = i
+    return move
+
+def play_game():
+    board = [' '] * 9
+    while True:
+        print_board(board)
+        # Human player (X) move
+        move = int(input("Enter your move (1-9): ")) - 1
+        if move < 0 or move > 8 or board[move] != ' ':
+            print("Invalid move, try again.")
+            continue
+        board[move] = 'X'
+
+        if check_winner(board, 'X'):
+            print_board(board)
+            print("You win!")
+            break
+        if is_full(board):
+            print_board(board)
+            print("It's a tie!")
+            break
+
+        # AI player (O) move
+        ai_move = best_move(board)
+        board[ai_move] = 'O'
+
+        if check_winner(board, 'O'):
+            print_board(board)
+            print("AI wins!")
+            break
+        if is_full(board):
+            print_board(board)
+            print("It's a tie!")
+            break
+
+if __name__ == "__main__":
+    play_game()
