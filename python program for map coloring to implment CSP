@@ -1,0 +1,47 @@
+# Define the map with regions and their neighbors
+regions = {
+    'A': ['B', 'C', 'D'],
+    'B': ['A', 'C', 'E'],
+    'C': ['A', 'B', 'D', 'E'],
+    'D': ['A', 'C'],
+    'E': ['B', 'C']
+}
+
+# Define the available colors
+colors = ['Red', 'Green', 'Blue']
+
+# A function to check if the current color assignment is valid
+def is_valid(region, color, color_assignment):
+    for neighbor in regions[region]:
+        if color_assignment.get(neighbor) == color:
+            return False
+    return True
+
+# A backtracking function to solve the CSP
+def map_coloring(region_index, color_assignment):
+    if region_index == len(regions):
+        return True
+    
+    region = list(regions.keys())[region_index]
+    
+    for color in colors:
+        if is_valid(region, color, color_assignment):
+            color_assignment[region] = color
+            
+            # Recursively assign colors to the next regions
+            if map_coloring(region_index + 1, color_assignment):
+                return True
+            
+            # If assigning color fails, backtrack
+            del color_assignment[region]
+    
+    return False
+
+# Initialize color assignment and solve the problem
+color_assignment = {}
+if map_coloring(0, color_assignment):
+    print("Solution found:")
+    for region, color in color_assignment.items():
+        print(f"{region}: {color}")
+else:
+    print("No solution exists.")
