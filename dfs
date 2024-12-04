@@ -1,0 +1,9 @@
+import networkx as nx
+
+def dfs_path(graph, start, goal):
+    return nx.dfs_edges(graph, source=start)
+
+if _name_ == "_main_":
+    graph = nx.Graph({'A': ['B', 'C'], 'B': ['D', 'E'], 'C': ['F'], 'D': [], 'E': [], 'F': []})
+    path = list(nx.dfs_edges(graph, source='A'))
+    print("Path to goal:", path)
