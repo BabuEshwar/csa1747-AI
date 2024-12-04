@@ -1,0 +1,5 @@
+import numpy as np
+
+grid = np.array([['C', 'D', 'D'], ['D', 'C', 'D'], ['D', 'D', 'C']])
+movements = [m for (i, j) in np.argwhere(grid == 'D') for m in ['DOWN'] * i + ['RIGHT'] * j + ['UP'] * i + ['LEFT'] * j]
+print("Movements to clean the grid:", movements)
