@@ -1,0 +1,9 @@
+import networkx as nx
+
+def bfs_path(graph, start):
+    return list(nx.bfs_edges(graph, source=start))
+
+if _name_ == "_main_":
+    graph = nx.Graph({'A': ['B', 'C'], 'B': ['D', 'E'], 'C': ['F'], 'D': [], 'E': [], 'F': []})
+    path = bfs_path(graph, 'A')
+    print("BFS path:", path)
