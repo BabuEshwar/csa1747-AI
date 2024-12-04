@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payroll Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; /* Change this to your desired background color */
+            padding: 20px;
+            color: #333; /* Change text color for better readability */
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        form {
+            background: rgba(255, 255, 255, 0.9); /* White background with transparency */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            max-width: 400px;
+            margin: auto;
+        }
+        input[type="text"], input[type="number"], input[type="button"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="button"] {
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="button"]:hover {
+            background-color: #4cae4c;
+        }
+        #employeeList {
+            margin-top: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555; /* Darker text for footer */
+        }
+    </style>
+</head>
+<body>
+
+<h1>Payroll Management System</h1>
+
+<form id="employeeForm">
+    <label for="name">Employee Name:</label>
+    <input type="text" id="name" placeholder="Enter employee name" required>
+
+    <label for="basicPay">Basic Pay:</label>
+    <input type="number" id="basicPay" placeholder="Enter basic pay" required>
+
+    <label for="overtimeHours">Overtime Hours:</label>
+    <input type="number" id="overtimeHours" placeholder="Enter overtime hours" required>
+
+    <label for="overtimeRate">Overtime Rate:</label>
+    <input type="number" id="overtimeRate" placeholder="Enter overtime rate" required>
+
+    <input type="button" value="Add Employee" onclick="addEmployee()">
+</form>
+
+<div id="employeeList">
+    <h3>Employee List</h3>
+    <ul id="employees"></ul>
+</div>
+
+<div id="payrollResult"></div>
+
+<script>
+    const employees = [];
+
+    function addEmployee() {
+        const name = document.getElementById('name').value;
+        const basicPay = parseFloat(document.getElementById('basicPay').value);
+        const overtimeHours = parseFloat(document.getElementById('overtimeHours').value);
+        const overtimeRate = parseFloat(document.getElementById('overtimeRate').value);
+
+        const employee = {
+            name: name,
+            basicPay: basicPay,
+            overtimeHours: overtimeHours,
+            overtimeRate: overtimeRate,
+            calculateGrossPay: function() {
+                return this.basicPay + (this.overtimeHours * this.overtimeRate);
+            },
+            calculateNetPay: function(taxRate, otherDeductions) {
+                const grossPay = this.calculateGrossPay();
+                const tax = grossPay * taxRate;
+                return grossPay - tax - otherDeductions;
+            },
+            printPayStub: function(taxRate, otherDeductions) {
+                const grossPay = this.calculateGrossPay();
+                const netPay = this.calculateNetPay(taxRate, otherDeductions);
+                return `
+                    <strong>${this.name}</strong><br>
+                    Gross Pay: $${grossPay.toFixed(2)}<br>
+                    Net Pay: $${netPay.toFixed(2)}<br>
+                    <hr>
+                `;
+            }
+        };
+
+        employees.push(employee);
+        document.getElementById('employeeForm').reset();
+        displayEmployees();
+    }
+
+    function displayEmployees() {
+        const employeeList = document.getElementById('employees');
+        employeeList.innerHTML = '';
+
+        employees.forEach((employee, index) => {
+            employeeList.innerHTML += `<li>${employee.name} <button onclick="processPayroll(${index})">Process Payroll</button></li>`;
+        });
+    }
+
+    function processPayroll(index) {
+        const taxRate = parseFloat(prompt("Enter tax rate (as a decimal):"));
+        const otherDeductions = parseFloat(prompt("Enter other deductions:"));
+        
+        const employee = employees[index];
+        const payrollResult = document.getElementById('payrollResult');
+        payrollResult.innerHTML = employee.printPayStub(taxRate, otherDeductions);
+    }
+</script>
+
+<footer>
+    &copy; 2024 HMM. All rights reserved.
+</footer>
+
+</body>
+</html>

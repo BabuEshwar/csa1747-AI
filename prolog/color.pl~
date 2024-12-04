@@ -1,0 +1,10 @@
+fruit(apple, red).
+fruit(banana, yellow).
+fruit(grape, purple).
+flowers(rose,red).
+flowers(banti,yellow).
+flowers(marygold,purple).
+foc(Color, Fruit,Flowers) :-
+    fruit(Fruit,Flowers,Color),
+    flowers(Flowers,
+Color).

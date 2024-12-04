@@ -1,0 +1,21 @@
+p(manoj,mike).
+p(manoj,mary).
+p(nikki,mary).
+p(nikki,mike).
+p(mike,sai).
+p(sita,sai).
+sibling(X,y):-
+    p(P,X),
+    p(P,Y),
+    X\=Y.
+grandparent(GP,GC):-
+    p(GP,P),
+    p(P,GC).
+aunt_or_uncle(AU,N):-
+    sibling(AU,P),
+    p(P,N).
+cousin(C1,C2):-
+    p(P1,C1),
+    p(P2,C2),
+    sibling(P1,P2).
+

@@ -1,0 +1,13 @@
+person(sai,date(2004-05-26)).
+person(vijay,date(2005-06-12)).
+person(ganesh,date(1999-05-23)).
+dob(Name,Date):-
+    person(Name,Date).
+all(Name):-
+    findall(Name,person(Name,_),Name).
+after(Year, Name) :-
+    person(Name, date(Year1, _, _)),
+    Year1 > Year.
+after_month(Month, Name) :-
+    person(Name, date(_, Month1, _)),
+    Month1 > Month.

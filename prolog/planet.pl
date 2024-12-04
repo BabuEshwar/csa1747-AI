@@ -1,0 +1,6 @@
+planet('Mercury', 'Terrestrial', 0.39).
+planet('Venus','Terrestrial', 0.72).
+
+find(Name, Type, Distance) :-
+    planet(Name, Type, Distance).
+

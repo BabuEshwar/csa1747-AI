@@ -1,0 +1,17 @@
+f(sai,ram).
+f(sai,nikki).
+f(nikkitha,ram).
+f(nikkitha,nikki).
+f(ram,mithil).
+f(ram,raju).
+f(nikki,deva).
+f(nikki,sandeep).
+father(X,Y):-
+    f(X,Y).
+mother(X,Y):-
+    f(X,Y).
+grand(X,Y):-
+    f(X,Z),
+    f(Z,Y).
+all(X,Y):-
+    f(X,Y).

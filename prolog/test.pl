@@ -1,0 +1,22 @@
+a(sai).
+a(ram).
+a(nikki).
+b(mr_smith).
+b(ms_jones).
+sub(math101).
+sub(cs102).
+sub(phy103).
+tea(mr_smith,math101).
+tea(mr_jones,cs102).
+tea(ms_jones,phy103).
+enroll(sai,phy103).
+enroll(ram,mat101).
+enroll(nikki,cs102).
+enroll(sai,cs102).
+student_subject(Student,Subject):-
+    enroll(Student,Subject).
+teacher_subject(Teacher,Subject):-
+    tea(Teacher,Subject).
+student_teacher(Student,Teacher):-
+    enroll(Student,Subject),
+    tea(Teacher,Subject).

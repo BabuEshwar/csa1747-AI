@@ -1,0 +1,9 @@
+symptoms(flu,[fever,cough,sore_throat]).
+symptoms(cold,[cough,sneezing,runny_nose]).
+symptoms(covid,[fever,cough,sore_throat,shortness_of_breath]).
+has_any_symptoms(Givensymptoms,DiseaseSymptoms):-
+    member(Symptom,Givensymptoms),
+    member(Symptom,DiseaseSymptoms).
+diagnosis(Disease,Givensymptoms):-
+    symptoms(Disease,DiseaseSymptoms),
+    has_any_sumptoms(Givensymptoms,DiseaseSymptoms).

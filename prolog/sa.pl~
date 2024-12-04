@@ -1,0 +1,9 @@
+on_box(monkey, room).
+on_box(monkey, box).
+at(monkey, floor).
+at(bananas, ceiling).
+at(box, ceiling).  % Add this fact
+
+can_reach(Monkey, Bananas) :-
+    on_box(Monkey, X),
+    at(Bananas, X).

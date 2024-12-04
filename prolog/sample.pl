@@ -1,0 +1,14 @@
+b(eagle).
+b(sparrow).
+b(penguin).
+b(ostrich).
+can(eagle).
+can(sparrow).
+cannot(penguin).
+cannot(ostrich).
+bird_can(Bird):-
+can(Bird).
+bird_cannot(Bird):-
+cannot(Bird).
+all(Bird):-
+b(Bird).
