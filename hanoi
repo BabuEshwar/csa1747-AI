@@ -1,0 +1,12 @@
+hanoi(N) :-
+    move(N, left, center, right).
+move(0, _, _, _) :- !.
+
+move(N, A, B, C) :-
+    N > 0,
+    M is N - 1,
+    move(M, A, C, B),     
+    move_disk(A, C),      
+    move(M, B, A, C).     
+move_disk(From, To) :-
+    format('Move disk from ~w to ~w~n', [From, To]).
